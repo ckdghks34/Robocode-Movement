@@ -73,3 +73,72 @@ if (getVelocity() == 0){
 ```
 
 Put that into your `doMove()` method (or wherever else you're handling movement) and you can handle all wall-hit and robot-hit events. All the sample bots below use this technique.
+
+# Shall We Dance?
+
+All the sample robots that follow use the above techniques for moving around their enemies, with some minor variations. You can match them up against any of the sample robots.
+
+## Circling
+
+Circling your enemy can be done by simply using the above techniques:
+
+```java
+public void doMove() {
+	// switch directions if we've stopped
+	if (getVelocity() == 0) {
+		moveDirection *= -1;
+	}
+	// always square off against our enemy
+	setTurnRight(normalizeBearing(enemy.getBearing() + 90));
+	// circle our enemy
+	setAhead(1000 * moveDirection);
+}
+```
+Note: be sure to put the 'if' test first or your bot will hug the wall.
+
+**Sample robot:** [Circler](http://mark.random-article.com/robocode/lessons/Circler.java) circles his enemy using the above movement code, rather like a shark circling it's prey in the water.
+
+## Strafing
+
+One problem you might notice with Circler is that he is easy prey for predictive targeting because his movements are so... predictable. If you match Circler up against PredictiveShooter you'll see how quick Circler goes down.
+
+To evade bullets more effectively, you should move side-to-side or "strafe". A good way to do this is to switch direction after a certain number of "ticks", like so:
+
+```java
+public void doMove() {
+
+	// always square off against our enemy
+	setTurnRight(enemy.getBearing() + 90);
+
+	// strafe by changing direction every 20 ticks
+	if (getTime() % 20 == 0) {
+		moveDirection *= -1;
+		setAhead(150 * moveDirection);
+	}
+}
+```
+
+Oddly, MyFirstRobot does something along these lines and can be surprisingly hard to hit.
+
+**Sample robot:** [Strafer](http://mark.random-article.com/robocode/lessons/Strafer.java) rocks back and forth using the above movement code. Notice how nicely he dodges bullets.
+
+## Closing In
+
+You'll notice that both Circler and Strafer have another problem: they get stuck in the corners easy and end up just banging into the walls. An additional problem is that if their enemy is distant, they shoot a lot but don't hit a lot.
+
+To make your robot close in on your enemy, just modify the "squaring off" code to make him turn in toward his enemy slightly, like so:
+
+```java
+setTurnRight(normalizeBearing(enemy.getBearing() + 90 - (15 * moveDirection)));
+```
+
+**Sample robot:** [Spiraler](http://mark.random-article.com/robocode/lessons/Spiraler.java) is a variation on Circler that uses the above code to spiral in toward his enemy.
+
+**Sample robot:** [StrafeCloser](http://mark.random-article.com/robocode/lessons/StrafeCloser.java) is a variant on Strafer that uses the above code to strafe ever closer. He's a pretty good bullet-dodger, too.
+
+Note that neither of the above robots gets caught in a corner for very long.
+
+## Assignment Part I: MOVE Something
+
+1. Use the above strategies to improve your robot's movement. Your robot should strafe, circle, and / or close in on enemies.
+
