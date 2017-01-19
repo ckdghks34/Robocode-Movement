@@ -146,8 +146,8 @@ Note that neither of the above robots gets caught in a corner for very long.
 
 You may find the following information useful. These are links to Sun's online Java tutorials.
 
-[What Is an Interface?](http://java.sun.com/docs/books/tutorial/java/concepts/interface.html) - basic concept of what an interface is
-[Creating and Using Interfaces](http://java.sun.com/docs/books/tutorial/java/interpack/createinterface.html) - how to create and to use interfaces 
+[What Is an Interface?](https://docs.oracle.com/javase/tutorial/java/IandI/createinterface.html) - basic concept of what an interface is
+[Using Interfaces](https://docs.oracle.com/javase/tutorial/java/IandI/usinginterface.html) - how to create and to use interfaces 
 
 ## Specifications
 
@@ -251,3 +251,136 @@ public class PartsBot extends AdvancedRobot {
 
 }
 ```
+
+# Part III: Improved Movement
+
+Here you'll learn how to avoid walls and make a multi-mode bot.
+
+## Avoiding Walls
+
+A problem with all of the previous robots we've looked at is that they hit the walls a lot, and hitting the walls drains your energy. A better strategy would be to stop before you hit the walls. But how?
+
+## Adding a Custom Event
+
+The first thing you need to do is decide how close we will allow our robot to get to the walls:
+
+```java
+public class WallAvoider extends AdvancedRobot {
+	...
+	private int wallMargin = 60;
+```
+
+Next, we add a custom event that will be fired when a certain condition is true:
+
+```java
+// Don't get too close to the walls
+addCustomEvent(new Condition("too_close_to_walls") {
+		public boolean test() {
+			return (
+				// we're too close to the left wall
+				(getX() <= wallMargin ||
+				 // or we're too close to the right wall
+				 getX() >= getBattleFieldWidth() - wallMargin ||
+				 // or we're too close to the bottom wall
+				 getY() <= wallMargin ||
+				 // or we're too close to the top wall
+				 getY() >= getBattleFieldHeight() - wallMargin)
+				);
+			}
+		});
+```
+
+Note that we are creating an [anonymous inner class](https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html) with this call. We need to override the `test()` method to return a boolean when our custom event occurs.
+
+## Handling the Custom Event
+
+The next thing we need to do is handle the event, which can be done like so:
+
+```java
+public void onCustomEvent(CustomEvent e) {
+	if (e.getCondition().getName().equals("too_close_to_walls"))
+	{
+		// switch directions and move away
+		moveDirection *= -1;
+		setAhead(10000 * moveDirection);
+	}
+}
+```
+
+The problem with that approach, though is that this event could get fired over and over, causing us to rappidly switch back and forth, never actually moving away.
+
+**Sample robot:** [JiggleOfDeath](http://mark.random-article.com/robocode/lessons/JiggleOfDeath.java) demonstrates the flaw in the above approach. Match him up against Walls and watch him go down.
+
+To avoid this "jiggle of death" we should have a variable that indicates that we're handling the event. We can declare another like so:
+
+```java
+public class WallAvoider extends AdvancedRobot {
+	...
+	private int tooCloseToWall = 0;
+```
+
+Then handle the event a little smarter:
+
+```java
+public void onCustomEvent(CustomEvent e) {
+	if (e.getCondition().getName().equals("too_close_to_walls"))
+	{
+		if (tooCloseToWall <= 0) {
+			// if we weren't already dealing with the walls,
+			// we are now
+			tooCloseToWall += wallMargin;
+			setMaxVelocity(0); // stop!!!
+		}
+	}
+}
+```
+
+## Handling the Two Modes
+
+There are two last problems we need to solve. Firstly, we have a `doMove()` method where we put all our normal movement code. If we're trying to get away from a wall, we don't want our normal movement code to get called, creating (once again) the "jiggle of death". Secondly, we want to eventually return to "normal" movement, so we should have the `tooCloseToWall` variable "time out" eventually.
+
+We can solve both these problems with the following `doMove()` implementation:
+
+```java
+public void doMove() {
+	// always square off against our enemy, turning slightly toward him
+	setTurnRight(enemy.getBearing() + 90 - (10 * moveDirection));
+
+	// if we're close to the wall, eventually, we'll move away
+	if (tooCloseToWall > 0) tooCloseToWall--;
+
+	// normal movement: switch directions if we've stopped
+	if (getVelocity() == 0) {
+		setMaxVelocity(8);
+		moveDirection *= -1;
+		setAhead(10000 * moveDirection);
+	}
+}
+```
+
+**Sample robot:** [WallAvoider](http://mark.random-article.com/robocode/lessons/WallAvoider.java) uses all the above code to avoid running into the walls. Match him up against Walls and note how he gently glides toward the sides but never (well, rarely) hits them. Feel free to experiment perfecting it. 
+
+## Multi-Mode Bot
+
+Besides the colors you chose, the biggest part of your robot's personality is in his movement code. On the other hand, different situations call for different tactics. Using the wall-avoiding as an example, you may want to code your bot to change "modes" based on certain criteria. Using your PartsBot exercise as a starting point, I can picture a robot with a method like this in it:
+
+```java
+public void onRobotDeath(RobotDeathEvent e) {
+	...
+	if (getOthers() > 10) {
+		// a large group calls for fluid movement
+		parts[TANK] = new CirclingTank();
+	} else if (getOthers() > 1) {
+		// dodging is the best small-group tactic
+		parts[TANK] = new DodgingTank();
+	} else if (getOthers() == 1) {
+		// if there's only one bot left, hunt him down
+		parts[TANK] = new SeekAndDestroy();
+	}
+	...
+}   
+```
+
+The details are left as an exercise. 
+
+**Hint:** You will need to create a new class for each type of Tank and have it inherit from the `Tank` class
