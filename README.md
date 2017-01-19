@@ -147,6 +147,7 @@ Note that neither of the above robots gets caught in a corner for very long.
 You may find the following information useful. These are links to Sun's online Java tutorials.
 
 [What Is an Interface?](https://docs.oracle.com/javase/tutorial/java/IandI/createinterface.html) - basic concept of what an interface is
+
 [Using Interfaces](https://docs.oracle.com/javase/tutorial/java/IandI/usinginterface.html) - how to create and to use interfaces 
 
 ## Specifications
@@ -186,14 +187,14 @@ public boolean wasTracking(RobotDeathEvent e) {
 Next, write a class called Gun that also implements the RobotPart interface. As before, you will need to override both of the interface's methods.
 
 1. In the override of the init() method, you will probably want to call `setAdjustGunForRobotTurn(true)`.
-2. In the override of the move() method, you will want to aim the gun and fire. Feel free to use the predictive targeting that from the Targeting assignment.
+2. In the override of the move() method, you will want to aim the gun and fire. Feel free to use the predictive targeting that you wrote from the Targeting assignment.
 
 ### The Tank Class
 
 Lastly, write a class called Tank that also implements the RobotPart interface. If you haven't figured it out already, you will need to override both of the interface's methods in this class too.
 
 1. In the override of the init() method, you will probably want to call setColors(...) with colors of your choice. (See the [online docs for Color](http://java.sun.com/j2se/1.3/docs/api/java/awt/Color.html) for ideas.)
-2. In the override of the move() method, you will want to move your robot. You will probably want to look at Basic Movement for ideas.
+2. In the override of the move() method, you will want to move your robot. You will probably want to look at Part I of this assignment for ideas.
 
 
 ### Test Harness
@@ -381,6 +382,8 @@ public void onRobotDeath(RobotDeathEvent e) {
 }   
 ```
 
-The details are left as an exercise. 
+## Assignment Part III: Create a multi-mode robot
+
+1. Use the above strategies so that your robot has at least 3 modes
 
 **Hint:** You will need to create a new class for each type of Tank and have it inherit from the `Tank` class
