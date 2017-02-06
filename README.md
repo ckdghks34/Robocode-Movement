@@ -193,7 +193,7 @@ Next, write a class called Gun that also implements the RobotPart interface. As 
 
 Lastly, write a class called Tank that also implements the RobotPart interface. If you haven't figured it out already, you will need to override both of the interface's methods in this class too.
 
-1. In the override of the init() method, you will probably want to call setColors(...) with colors of your choice. (See the [online docs for Color](http://java.sun.com/j2se/1.3/docs/api/java/awt/Color.html) for ideas.)
+1. In the override of the init() method, you will probably want to call setColors(...) with colors of your choice. (See the [online docs for Color](https://docs.oracle.com/javase/7/docs/api/java/awt/Color.html) for ideas.)
 2. In the override of the move() method, you will want to move your robot. You will probably want to look at Part I of this assignment for ideas.
 
 
