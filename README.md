@@ -6,8 +6,7 @@ In this project, we come back to where we started in Battlefield_Basics, moving 
 
 If you've played basketball before, you know that if you want to defend someone holding the ball, you want to maximize your lateral movement by always squaring off against them (facing them). The same is true with your robot as the following picture illustrates:
 
-![Image of Sideways Robot]
-(http://mark.random-article.com/robocode/square_off.jpg)
+![Image of Sideways Robot](./images/square_off.jpg)
 
 The yellow robot can easily move side to side to evade the blue robot and dodge the bullets he shoots. The blue robot, by contrast, doesn't have any good place to go: if he moves back, he gets shot at by the yellow bot, if he moves forward to try to ram, the yellow bot can just scoot out of the way.
 
@@ -36,7 +35,7 @@ When you're squared off against an opponent, the ideas of "forward" and "backwar
 class MyRobot extends AdvancedRobot {
 	private byte moveDirection = 1;
  ```
- 
+
 then, when you want to move your robot, you can just say:
 
 ```java
@@ -51,14 +50,14 @@ moveDirection *= -1;
 
 ## Switching Directions
 
-The most intuative approach to switching directions is to just flip the move direction any time you hit a wall or hit another robot like so:
+The most intuitive approach to switching directions is to just flip the move direction any time you hit a wall or hit another robot like so:
 
 ```java
-public void onHitWall(HitWallEvent e) { 
-    moveDirection *= -1; 
+public void onHitWall(HitWallEvent e) {
+    moveDirection *= -1;
 }
-public void onHitRobot(HitRobotEvent e) { 
-    moveDirection *= -1; 
+public void onHitRobot(HitRobotEvent e) {
+    moveDirection *= -1;
 }
 ```
 
@@ -148,7 +147,7 @@ You may find the following information useful. These are links to Sun's online J
 
 [What Is an Interface?](https://docs.oracle.com/javase/tutorial/java/IandI/createinterface.html) - basic concept of what an interface is
 
-[Using Interfaces](https://docs.oracle.com/javase/tutorial/java/IandI/usinginterface.html) - how to create and to use interfaces 
+[Using Interfaces](https://docs.oracle.com/javase/tutorial/java/IandI/usinginterface.html) - how to create and to use interfaces
 
 ## Specifications
 
@@ -202,7 +201,7 @@ Lastly, write a class called Tank that also implements the RobotPart interface. 
 To test the various parts you wrote, you can start with the following skeleton code:
 
 ```java
-//add your package name 
+//add your package name
 import robocode.*;
 
 public class PartsBot extends AdvancedRobot {
@@ -359,7 +358,7 @@ public void doMove() {
 }
 ```
 
-**Sample robot:** [WallAvoider](http://mark.random-article.com/robocode/lessons/WallAvoider.java) uses all the above code to avoid running into the walls. Match him up against Walls and note how he gently glides toward the sides but never (well, rarely) hits them. Feel free to experiment perfecting it. 
+**Sample robot:** [WallAvoider](http://mark.random-article.com/robocode/lessons/WallAvoider.java) uses all the above code to avoid running into the walls. Match him up against Walls and note how he gently glides toward the sides but never (well, rarely) hits them. Feel free to experiment perfecting it.
 
 ## Multi-Mode Bot
 
