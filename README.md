@@ -95,7 +95,7 @@ public void doMove() {
 ```
 Note: be sure to put the 'if' test first or your bot will hug the wall.
 
-**Sample robot:** [Circler](http://mark.random-article.com/robocode/lessons/Circler.java) circles his enemy using the above movement code, rather like a shark circling it's prey in the water.
+**Sample robot:** [Circler](./templateBots/Circler.java) circles his enemy using the above movement code, rather like a shark circling it's prey in the water.
 
 ## Strafing
 
@@ -119,7 +119,7 @@ public void doMove() {
 
 Oddly, MyFirstRobot does something along these lines and can be surprisingly hard to hit.
 
-**Sample robot:** [Strafer](http://mark.random-article.com/robocode/lessons/Strafer.java) rocks back and forth using the above movement code. Notice how nicely he dodges bullets.
+**Sample robot:** [Strafer](./templateBots/Strafer.java) rocks back and forth using the above movement code. Notice how nicely he dodges bullets.
 
 ## Closing In
 
@@ -131,9 +131,9 @@ To make your robot close in on your enemy, just modify the "squaring off" code t
 setTurnRight(normalizeBearing(enemy.getBearing() + 90 - (15 * moveDirection)));
 ```
 
-**Sample robot:** [Spiraler](http://mark.random-article.com/robocode/lessons/Spiraler.java) is a variation on Circler that uses the above code to spiral in toward his enemy.
+**Sample robot:** [Spiraler](./templateBots/Spiraler.java) is a variation on Circler that uses the above code to spiral in toward his enemy.
 
-**Sample robot:** [StrafeCloser](http://mark.random-article.com/robocode/lessons/StrafeCloser.java) is a variant on Strafer that uses the above code to strafe ever closer. He's a pretty good bullet-dodger, too.
+**Sample robot:** [StrafeCloser](./templateBots/StrafeCloser.java) is a variant on Strafer that uses the above code to strafe ever closer. He's a pretty good bullet-dodger, too.
 
 Note that neither of the above robots gets caught in a corner for very long.
 
@@ -309,7 +309,7 @@ public void onCustomEvent(CustomEvent e) {
 
 The problem with that approach, though is that this event could get fired over and over, causing us to rappidly switch back and forth, never actually moving away.
 
-**Sample robot:** [JiggleOfDeath](http://mark.random-article.com/robocode/lessons/JiggleOfDeath.java) demonstrates the flaw in the above approach. Match him up against Walls and watch him go down.
+**Sample robot:** [JiggleOfDeath](./templateBots/JiggleOfDeath.java) demonstrates the flaw in the above approach. Match him up against Walls and watch him go down.
 
 To avoid this "jiggle of death" we should have a variable that indicates that we're handling the event. We can declare another like so:
 
@@ -358,7 +358,7 @@ public void doMove() {
 }
 ```
 
-**Sample robot:** [WallAvoider](http://mark.random-article.com/robocode/lessons/WallAvoider.java) uses all the above code to avoid running into the walls. Match him up against Walls and note how he gently glides toward the sides but never (well, rarely) hits them. Feel free to experiment perfecting it.
+**Sample robot:** [WallAvoider](./templateBots/WallAvoider.java) uses all the above code to avoid running into the walls. Match him up against Walls and note how he gently glides toward the sides but never (well, rarely) hits them. Feel free to experiment perfecting it.
 
 ## Multi-Mode Bot
 
